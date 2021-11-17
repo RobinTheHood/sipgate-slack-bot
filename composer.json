@@ -1,0 +1,16 @@
+{
+    "name": "robinthehood/sipgate-slack-bot",
+    "type": "project",
+    "require": {
+        "guzzlehttp/guzzle": "^7.4"
+    },
+    "authors": [
+        {
+            "name": "Robin Wieschendorf",
+            "email": "mail@robinwieschendorf.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"App\\": "app/"}
+    }
+}
