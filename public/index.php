@@ -8,9 +8,25 @@ restore_exception_handler();
 
 require_once '../vendor/autoload.php';
 
-$sipgateApi = new App\Classes\SipgateApi(
-    App\Config\Config::SIPGATE_API_USERNAME,
-    App\Config\Config::SIPGATE_API_PASSWORD
-);
+function testSipgateApi()
+{
+    $sipgateApi = new App\Classes\SipgateApi(
+        App\Config\Config::SIPGATE_API_USERNAME,
+        App\Config\Config::SIPGATE_API_PASSWORD
+    );
 
-$sipgateApi->getAllHistoryEntries();
+    $sipgateApi->call();
+    $sipgateApi->getAllHistoryEntries();
+}
+
+function testSlackApi()
+{
+    $slackApi = new App\Classes\SlackApi(
+        App\Config\Config::SLACK_API_TOKEN
+    );
+
+    $slackApi->sentMessage();
+}
+
+//testSipgateApi();
+//testSlackApi();
