@@ -45,9 +45,21 @@ class SipgateApi
 
         // $users = [];
         // foreach ($response['items'] as $user) {
-            
         // }
 
         // return $users;
+    }
+
+    public function call()
+    {
+        $options = [
+            'json' => [
+                'deviceId' => "e7",
+                'caller' => "e7",
+                'callee' => "+491234567"
+            ]
+        ];
+
+        $response = $this->sendRequest('sessions/calls', 'POST', $options);
     }
 }
