@@ -6,7 +6,7 @@ namespace App\Classes\Sipgate;
 
 class HistoryStatusRepository
 {
-    private const DB_FILE_PATH = __DIR__ . '/../../data/HistoryStatusDb.txt';
+    private const DB_FILE_PATH = __DIR__ . '/../../../data/HistoryStatusDb.txt';
 
     public function loadAll(): array
     {
