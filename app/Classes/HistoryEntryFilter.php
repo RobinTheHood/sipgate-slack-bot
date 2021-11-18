@@ -17,7 +17,7 @@ class HistoryEntryFilter
     {
         $filteredHisotryEntires = [];
         foreach ($historyEntries as $historyEntry) {
-            $ageInSeconds = $historyEntry->getAge();
+            $ageInSeconds = $historyEntry->getAgeAfterHangUp();
             if ($ageInSeconds > $seconds) {
                 continue;
             }

@@ -37,6 +37,7 @@ class SipgateApi
     public function getAllHistoryEntries(): array
     {
         $response = $this->sendRequest('history');
+        //$response = $this->sendRequest('history?types=VOICEMAIL');
 
         foreach ($response['items'] as $historyEntry) {
             $historyEntries[] = new HistoryEntry($historyEntry);

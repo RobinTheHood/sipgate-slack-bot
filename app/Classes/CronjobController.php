@@ -6,6 +6,8 @@ use App\Config\Config;
 
 class CronjobController
 {
+    private $slackChannel = '#sipgate';
+
     public function run()
     {
         $this->task();
@@ -31,24 +33,25 @@ class CronjobController
         $historyEntries = $sipgateApi->getAllHistoryEntries();
 
         $historyFilter = new HistoryEntryFilter();
-        $newHistoryEntries = $historyFilter->filterNewUnsendEntries($historyEntries);
+        $newHistoryEntries = $historyEntries;
+        $newHistoryEntries = $historyFilter->filterNewUnsendEntries($newHistoryEntries);
 
-        var_dump($newHistoryEntries);
-        //die();
+        // echo '<pre>';
+        // print_r($newHistoryEntries);
+        // die();
 
-        //$messageFormater = new SlackMessageFormater();
-        //$slackApi = new SlackApi();
+        $messageFormater = new SlackMessageFormater();
+        $slackApi = new SlackApi(
+            Config::SLACK_API_TOKEN
+        );
 
-        foreach ($newHistoryEntries as $newHistoryEntry) {
-            //$slackMessage = $messageFormater->formatHistoryEntry($newHistoryEntry);
-            //$slackApi->sentMessage($this->slackChannel, $slackMessage);
-
-            $historyStatus = new HistoryStatus($newHistoryEntry->getId(), 'SEND_TO_SLACK');
-
+        foreach ($newHistoryEntries as $historyEntry) {
+            $slackMessage = $messageFormater->formatHistoryEntry($historyEntry);
+            $slackApi->sentMessage($this->slackChannel, $slackMessage);
+            //die();
+            $historyStatus = new HistoryStatus($historyEntry->getId(), 'SEND_TO_SLACK');
             $historyStatusRepository = new HistoryStatusRepository();
             $historyStatusRepository->save($historyStatus);
-
-            break;
         }
     }
 }
