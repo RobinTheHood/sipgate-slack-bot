@@ -11,6 +11,11 @@ class ApiController
 
     public function __construct()
     {
+        $payload = $_POST['payload'] ?? '';
+        if (!$payload) {
+            return;
+        }
+
         $this->request = json_decode($_POST['payload'], true);
         $this->actions = $this->request['actions'] ?? [];
     }
