@@ -31,9 +31,16 @@ function testSlackApi()
         App\Config\Config::SLACK_API_TOKEN
     );
 
-    $slackApi->sentMessage();
+    //$slackApi->sentMessage();
 }
 
-testCron();
+function testApiController()
+{
+    $apiController = new App\Classes\ApiController();
+    $apiController->invoke();
+}
+
+testApiController();
+//testCron();
 //testSipgateApi();
 //testSlackApi();
