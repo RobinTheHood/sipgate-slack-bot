@@ -10,13 +10,13 @@ require_once '../vendor/autoload.php';
 
 function testCron()
 {
-    $cronjobController = new App\Classes\CronjobController();
+    $cronjobController = new App\Classes\Controller\CronjobController();
     $cronjobController->run();
 }
 
 function testSipgateApi()
 {
-    $sipgateApi = new App\Classes\SipgateApi(
+    $sipgateApi = new App\Classes\Sipgate\SipgateApi(
         App\Config\Config::SIPGATE_API_USERNAME,
         App\Config\Config::SIPGATE_API_PASSWORD
     );
@@ -27,7 +27,7 @@ function testSipgateApi()
 
 function testSlackApi()
 {
-    $slackApi = new App\Classes\SlackApi(
+    $slackApi = new App\Classes\Slack\SlackApi(
         App\Config\Config::SLACK_API_TOKEN
     );
 
@@ -36,7 +36,7 @@ function testSlackApi()
 
 function testApiController()
 {
-    $apiController = new App\Classes\ApiController();
+    $apiController = new App\Classes\Controller\ApiController();
     $apiController->invoke();
 }
 

@@ -2,9 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace App\Classes;
+namespace App\Classes\Controller;
 
 use App\Config\Config;
+use App\Classes\Sipgate\SipgateApi;
+use App\Classes\Sipgate\HistoryEntryFilter;
+use App\Classes\Sipgate\HistoryStatus;
+use App\Classes\Sipgate\HistoryStatusRepository;
+use App\Classes\Slack\SlackMessageFormater;
+use App\Classes\Slack\SlackApi;
 
 class CronjobController
 {

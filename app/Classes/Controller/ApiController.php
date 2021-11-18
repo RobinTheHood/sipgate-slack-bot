@@ -2,9 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace App\Classes;
+namespace App\Classes\Controller;
 
 use App\Config\Config;
+use App\Classes\Sipgate\SipgateApi;
 
 class ApiController
 {
