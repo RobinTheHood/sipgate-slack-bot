@@ -8,6 +8,12 @@ restore_exception_handler();
 
 require_once '../vendor/autoload.php';
 
+function testCron()
+{
+    $cronjobController = new App\Classes\CronjobController();
+    $cronjobController->run();
+}
+
 function testSipgateApi()
 {
     $sipgateApi = new App\Classes\SipgateApi(
@@ -28,5 +34,6 @@ function testSlackApi()
     $slackApi->sentMessage();
 }
 
-testSipgateApi();
+testCron();
+//testSipgateApi();
 //testSlackApi();
