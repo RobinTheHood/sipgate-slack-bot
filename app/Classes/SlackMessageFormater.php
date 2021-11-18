@@ -22,13 +22,14 @@ class SlackMessageFormater
 
         $actionElements[] = [
             'type' => 'button',
+            'action_id' => 'call',
             'text' => [
                 'type' => 'plain_text',
                 'emoji' => true,
                 'text' => 'Rückruf',
             ],
             'style' => 'primary',
-            'value' => 'click_me_123',
+            'value' => $historyEntry->getSource(),
         ];
 
         $actionElements[] = [
