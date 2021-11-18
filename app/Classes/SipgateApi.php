@@ -45,13 +45,13 @@ class SipgateApi
         return $historyEntries;
     }
 
-    public function call()
+    public function call(string $deviceId, string $number): void
     {
         $options = [
             'json' => [
-                'deviceId' => "e7",
-                'caller' => "e7",
-                'callee' => "+491234567"
+                'deviceId' => $deviceId,
+                'caller' => $deviceId,
+                'callee' => $number
             ]
         ];
 
