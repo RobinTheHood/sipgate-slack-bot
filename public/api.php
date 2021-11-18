@@ -8,5 +8,5 @@ restore_exception_handler();
 
 require_once '../vendor/autoload.php';
 
-$apiController = new ApiController();
+$apiController = new App\Classes\ApiController();
 $apiController->invoke();
