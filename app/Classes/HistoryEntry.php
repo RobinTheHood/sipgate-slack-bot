@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Classes;
+declare(strict_types = 1);
 
-use DateTime;
+namespace App\Classes;
 
 class HistoryEntry
 {

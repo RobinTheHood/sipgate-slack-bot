@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Classes;
 
 class SlackMessageFormater
 {
-    public function formatHistoryEntry(HistoryEntry $historyEntry)
+    public function formatHistoryEntry(HistoryEntry $historyEntry): array
     {
         $actionElements = [];
 
