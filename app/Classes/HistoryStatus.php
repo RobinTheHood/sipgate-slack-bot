@@ -4,8 +4,14 @@ namespace App\Classes;
 
 class HistoryStatus
 {
-    private $historyEntryId;
-    private $status;
+    private $historyEntryId = '';
+    private $status = '';
+
+    public function __construct(string $historyEntryId, string $status)
+    {
+        $this->historyEntryId = $historyEntryId;
+        $this->status = $status;
+    }
 
     public function getHistoryEntryId(): string
     {

@@ -6,9 +6,9 @@ class HistoryEntryFilter
 {
     public function filterNewUnsendEntries(array $historyEntries): array
     {
-        // Younger than 5 minutes
-        $filteredHisotryEntires = $this->filterAgeYoungerThan($historyEntries, 60 * 5);
-        $filteredHisotryEntires = $this->filterStatusHasNot($historyEntries, 'SEND_TO_SLACK');
+        $filteredHisotryEntires = $historyEntries;
+        $filteredHisotryEntires = $this->filterAgeYoungerThan($historyEntries, 60 * 5); // Younger than 5 minutes
+        $filteredHisotryEntires = $this->filterStatusHasNot($filteredHisotryEntires, 'SEND_TO_SLACK');
         return $filteredHisotryEntires;
     }
 
@@ -18,7 +18,7 @@ class HistoryEntryFilter
         $filteredHisotryEntires = [];
         foreach ($historyEntries as $historyEntry) {
             $ageInSeconds = $historyEntry->getAge();
-            if ($ageInSeconds > $seconds) { // 5 Minutes
+            if ($ageInSeconds > $seconds) {
                 continue;
             }
             $filteredHisotryEntires[] = $historyEntry;
@@ -28,17 +28,26 @@ class HistoryEntryFilter
 
     public function filterStatusHasNot(array $historyEntries, string $status): array
     {
-        $historyEntryRepository = new HistoryEntryRepository();
-
         $filteredHisotryEntires = [];
-        foreach ($historyEntries as $historyEntriy) {
-            $historyEntryId = 0; // TODO
-            $historyStatusEntries = $historyEntryRepository->getAllStatusByHistoryEntryId($historyEntryId);
-            if (in_array($status, $historyStatusEntries)) {
+        foreach ($historyEntries as $historyEntry) {
+            if ($this->hasHistoryStatus($historyEntry, $status)) {
                 continue;
             }
             $filteredHisotryEntires[] = $historyEntry;
         }
         return $filteredHisotryEntires;
+    }
+
+    private function hasHistoryStatus(HistoryEntry $historyEntry, string $status): bool
+    {
+        $historyEntryRepository = new HistoryStatusRepository();
+        $historyEntryId = $historyEntry->getId();
+        $historyStatusEntries = $historyEntryRepository->getAllByHistoryEntryId($historyEntryId);
+        foreach ($historyStatusEntries as $historyStatusEntry) {
+            if ($historyStatusEntry->getStatus() == $status) {
+                return true;
+            }
+        }
+        return false;
     }
 }

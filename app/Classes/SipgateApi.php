@@ -34,27 +34,14 @@ class SipgateApi
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function getAllHistoryEntries()
+    public function getAllHistoryEntries(): array
     {
         $response = $this->sendRequest('history');
 
-        $dateTimeNow = new \DateTime();
         foreach ($response['items'] as $historyEntry) {
-            $dateTime = new \DateTime($historyEntry['created']);
-            $dateTime->getTimestamp();
-            var_dump(($dateTimeNow->getTimeStamp() - $dateTime->getTimestamp()) / 60 / 60);
+            $historyEntries[] = new HistoryEntry($historyEntry);
         }
-
-        var_dump($response);
-
-        echo '<pre>';
-        print_r($response);
-
-        // $users = [];
-        // foreach ($response['items'] as $user) {
-        // }
-
-        // return $users;
+        return $historyEntries;
     }
 
     public function call()

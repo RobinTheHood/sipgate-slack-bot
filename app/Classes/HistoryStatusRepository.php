@@ -2,11 +2,17 @@
 
 namespace App\Classes;
 
-class HistoryEntryRepository
+class HistoryStatusRepository
 {
+    private const DB_FILE_PATH = __DIR__ . '/../../data/HistoryStatusDb.txt';
+
     public function loadAll(): array
     {
-        $data = file_get_contents('../../data/HistoryStatusDb.txt');
+        if (!file_exists(self::DB_FILE_PATH)) {
+            return [];
+        }
+
+        $data = file_get_contents(self::DB_FILE_PATH);
         return unserialize($data);
     }
 
@@ -20,7 +26,7 @@ class HistoryEntryRepository
     public function saveAll(array $histroyStatusEntries): void
     {
         $data = serialize($histroyStatusEntries);
-        file_put_contents('../../data/HistoryStatusDb.txt', $data);
+        file_put_contents(self::DB_FILE_PATH, $data);
     }
 
     public function getAllByHistoryEntryId(string $historyEntryId)
