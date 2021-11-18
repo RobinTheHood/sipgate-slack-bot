@@ -18,4 +18,14 @@ class Config
 
     // Slack Api Token
     public const SLACK_API_TOKEN = "xoxb-XXX-XXX-XXX";
+
+    // Slack Api Client Id
+    public const SLACK_API_VERIFICATION_TOKEN = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+
+    public const API_CONFIG = [
+        [
+            'slackUsername' => 'slack_user_name',
+            'sipgateDeviceId' => 'e0'
+        ]
+    ];
 }
