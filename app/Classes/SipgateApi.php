@@ -38,6 +38,13 @@ class SipgateApi
     {
         $response = $this->sendRequest('history');
 
+        $dateTimeNow = new \DateTime();
+        foreach ($response['items'] as $historyEntry) {
+            $dateTime = new \DateTime($historyEntry['created']);
+            $dateTime->getTimestamp();
+            var_dump(($dateTimeNow->getTimeStamp() - $dateTime->getTimestamp()) / 60 / 60);
+        }
+
         var_dump($response);
 
         echo '<pre>';

@@ -15,7 +15,7 @@ function testSipgateApi()
         App\Config\Config::SIPGATE_API_PASSWORD
     );
 
-    $sipgateApi->call();
+    //$sipgateApi->call();
     $sipgateApi->getAllHistoryEntries();
 }
 
@@ -28,5 +28,5 @@ function testSlackApi()
     $slackApi->sentMessage();
 }
 
-//testSipgateApi();
+testSipgateApi();
 //testSlackApi();
