@@ -57,28 +57,28 @@ class HistoryEntry
         return $seconds;
     }
 
-    public function getSource()
+    public function getSource(): string
     {
-        return $this->historyEntryDataArray['source'];
+        return $this->historyEntryDataArray['source'] ?? '';
     }
 
-    public function getSourceAlias()
+    public function getSourceAlias(): string
     {
-        return $this->historyEntryDataArray['sourceAlias'];
+        return $this->historyEntryDataArray['sourceAlias'] ?? '';
     }
 
-    public function getTarget()
+    public function getTarget(): string
     {
-        return $this->historyEntryDataArray['target'];
+        return $this->historyEntryDataArray['target'] ?? '';
     }
 
-    public function getTargetAlias()
+    public function getTargetAlias(): string
     {
-        return $this->historyEntryDataArray['targetAlias'];
+        return $this->historyEntryDataArray['targetAlias'] ?? '';
     }
 
-    public function getResponderAlias()
+    public function getResponderAlias(): string
     {
-        return $this->historyEntryDataArray['responderAlias'];
+        return $this->historyEntryDataArray['responderAlias'] ?? '';
     }
 }
