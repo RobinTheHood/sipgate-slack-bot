@@ -15,24 +15,43 @@ use App\Classes\Slack\SlackApi;
 class CronjobController
 {
     private $slackChannel = '#sipgate';
+    private $waitTime = 30;
 
-    public function run()
+    public function runOnce(): void
     {
+        echo "Start runOnce\n";
         $this->task();
-        die();
+        echo "Finished runOnce\n";
+    }
+
+    public function runEndless(): void
+    {
+        echo "Start runEndless\n";
+        while (true) {
+            $this->task();
+            sleep($this->waitTime);
+        }
+        echo "Finished runEndless\n";
+    }
+
+    public function runAsCron(): void
+    {
+        echo "Start runAsCron\n";
 
         $cronJobInterval = 60 * 5;
-        $wantedInterval = 30;
-        $iterations = $cronJobInterval / $wantedInterval;
+        $iterations = $cronJobInterval / $this->waitTime;
 
         for ($i = 0; $i < $iterations; $i++) {
             $this->task();
-            sleep($wantedInterval);
+            sleep($this->waitTime);
         }
+
+        echo "Finished runAsCron\n";
     }
 
     private function task(): void
     {
+        echo "Start task\n";
         $sipgateApi = new SipgateApi(
             Config::SIPGATE_API_USERNAME,
             Config::SIPGATE_API_PASSWORD
@@ -56,10 +75,10 @@ class CronjobController
         foreach ($newHistoryEntries as $historyEntry) {
             $slackMessage = $messageFormater->formatHistoryEntry($historyEntry);
             $slackApi->sentMessage($this->slackChannel, $slackMessage);
-            //die();
             $historyStatus = new HistoryStatus($historyEntry->getId(), 'SEND_TO_SLACK');
             $historyStatusRepository = new HistoryStatusRepository();
             $historyStatusRepository->save($historyStatus);
         }
+        echo "Finished task\n";
     }
 }
