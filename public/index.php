@@ -11,7 +11,7 @@ require_once '../vendor/autoload.php';
 function testCron()
 {
     $cronjobController = new App\Classes\Controller\CronjobController();
-    $cronjobController->run();
+    $cronjobController->runOnce();
 }
 
 function testSipgateApi()
