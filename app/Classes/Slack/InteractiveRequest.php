@@ -11,7 +11,7 @@ class InteractiveRequest
 
     public function __construct(string $payload)
     {
-        $this->request = json_decode($_POST['payload'], true);
+        $this->request = json_decode($payload, true);
         $this->actions = $this->request['actions'] ?? [];
     }
 
@@ -23,7 +23,7 @@ class InteractiveRequest
 
     public function hasAccess(string $verificationToken, string $apiAppId = ''): bool
     {
-        if ($$apiAppId) {
+        if ($apiAppId) {
             $requestApiAppId = $this->request['api_app_id'] ?? '';
             if ($requestApiAppId  != $apiAppId) {
                 return false;
