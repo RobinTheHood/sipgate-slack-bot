@@ -6,26 +6,22 @@ namespace App\Classes\Controller;
 
 use App\Config\Config;
 use App\Classes\Sipgate\SipgateApi;
+use App\Classes\Slack\InteractiveRequest;
 
 class ApiController
 {
-    private $request = [];
-    private $actions = [];
+    private $request;
 
-    public function __construct()
+    public function invoke()
     {
         $payload = $_POST['payload'] ?? '';
         if (!$payload) {
             return;
         }
 
-        $this->request = json_decode($_POST['payload'], true);
-        $this->actions = $this->request['actions'] ?? [];
-    }
+        $this->request = new InteractiveRequest($payload);
 
-    public function invoke()
-    {
-        if ($this->hasAccess()) {
+        if ($this->request->hasAccess(Config::SLACK_API_VERIFICATION_TOKEN)) {
             return;
         }
 
@@ -39,7 +35,7 @@ class ApiController
 
     private function invokeCall()
     {
-        $slackUsername = $this->request['user']['username'] ?? [];
+        $slackUsername = $this->request->getUsername();
 
         $config = $this->getConfigBy('slackUsername', $slackUsername);
         if (!$config) {
@@ -47,7 +43,7 @@ class ApiController
             return;
         }
 
-        $action = $this->getActionById('call');
+        $action = $this->request->getActionById('call');
         $number = $action['value'];
 
         if (!$number) {
@@ -67,27 +63,10 @@ class ApiController
 
     private function getAction(): string
     {
-        if (!$this->hasActionId('call')) {
+        if (!$this->request->hasActionId('call')) {
             return '';
         }
         return 'call';
-    }
-
-    private function hasAccess(): bool
-    {
-        // $slackAppId = $this->request['api_app_id'] ?? '';
-        // if ($slackAppId  != Config::SLACK_API_APP_ID) {
-        //     echo 'No Access 1';
-        //     return false;
-        // }
-
-        $token = $this->request['token'] ?? '';
-        if ($token != Config::SLACK_API_VERIFICATION_TOKEN) {
-            echo 'No Access 2';
-            return false;
-        }
-
-        return true;
     }
 
     private function getConfigBy(string $field, string $value): array
@@ -98,33 +77,5 @@ class ApiController
             }
         }
         return [];
-    }
-
-    private function hasActionId(string $id): bool
-    {
-        if ($this->getActionById($id)) {
-            return true;
-        }
-        return false;
-    }
-
-    private function getActionById(string $id): array
-    {
-        foreach ($this->actions as $action) {
-            if ($action['action_id'] == $id) {
-                return $action;
-            }
-        }
-        return [];
-    }
-
-    private function hasActionValue(string $value): bool
-    {
-        foreach ($this->actions as $action) {
-            if ($action['value'] == $value) {
-                return true;
-            }
-        }
-        return false;
     }
 }
