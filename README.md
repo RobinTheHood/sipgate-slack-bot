@@ -26,7 +26,7 @@ We are using:
 
 
 ## 💻 Development
-Für die Rückruf-Funktion sendet Slack einen Request an deinen Server. Wenn du local entwickelst ist dein Computer für Slack nicht erreichbar. Um diese Funktion trozdem lokal testen zu können, kannst du z. B.  Tool `ngrok` verwenden. Ngrok leitet Request von einer öffentlichen Adresse auf deinen lokalen Computer weiter.
+Slack sends a request to your server for the callback function. If you develop locally, your computer is inaccessible to Slack. In order to be able to test this function locally, you can e.g. use the `ngrok` tool. `ngrok` forwards requests from a public address to your local computer.
 
 To do this, download `ngrok` from https://ngrok.com. You can run `ngrok` on your computer as follows. After the call, `ngrok` will return a public web address as output.
 
