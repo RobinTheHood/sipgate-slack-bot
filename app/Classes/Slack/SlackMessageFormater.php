@@ -5,12 +5,44 @@ declare(strict_types=1);
 namespace App\Classes\Slack;
 
 use App\Classes\Sipgate\HistoryEntry;
+use DateTimeZone;
 
 class SlackMessageFormater
 {
+    private function getSourceName(HistoryEntry $historyEntry): string
+    {
+        if ($historyEntry->getSourceAlias()) {
+            return $historyEntry->getSourceAlias();
+        }
+
+        $contact = $historyEntry->getSourceContact();
+        if ($contact) {
+            return $contact->getName();
+        }
+
+        return 'Unbekannt';
+    }
+
+    private function getTargetName(HistoryEntry $historyEntry): string
+    {
+        if ($historyEntry->getTargetAlias()) {
+            return $historyEntry->getTargetAlias();
+        }
+
+        $contact = $historyEntry->getTargetContact();
+        if ($contact) {
+            return $contact->getName();
+        }
+
+        return 'Unbekannt';
+    }
+
     public function formatHistoryEntry(HistoryEntry $historyEntry): array
     {
         $actionElements = [];
+
+        $dateCreated = $historyEntry->getCreated()->setTimeZone(new DateTimeZone('Europe/Berlin'));
+        $formatedDateCreated = $dateCreated->format('d.m.Y H:i');
 
         if ($historyEntry->getRecordingUrl()) {
             $actionElements[] = [
@@ -46,12 +78,24 @@ class SlackMessageFormater
             'url' => 'https://app.sipgate.com/history'
         ];
 
+        $sourceName = $this->getSourceName($historyEntry);
+        $targetName = $this->getTargetName($historyEntry);
+
+        if ($historyEntry->getDirection() == 'MISSED_INCOMING') {
+            $headingText = ':x: Anruf von ' . $historyEntry->getSource() . ' (' . $sourceName . ') verpasst.';
+        } elseif ($historyEntry->getDirection() == 'INCOMING') {
+            $headingText = ':white_check_mark: Anruf von ' . $historyEntry->getSource() . ' (' . $sourceName . ') angenommen.';
+        } else {
+            $headingText = ':speech_balloon: Neue Benachrichtigung von sipgate';
+        }
+
+
         $block = [
             [
                 'type' => 'section',
                 'text' => [
                     'type' => 'mrkdwn',
-                    'text' => 'Neue Benachrichtigung von sipgate',
+                    'text' => $headingText,
                 ],
             ],
             [
@@ -63,7 +107,7 @@ class SlackMessageFormater
                     ],
                     [
                         'type' => 'mrkdwn',
-                        'text' => "*Von Name:*\n" . $historyEntry->getSourceAlias(),
+                        'text' => "*Von Name:*\n" . $this->getSourceName($historyEntry),
                     ],
                     [
                         'type' => 'mrkdwn',
@@ -71,11 +115,11 @@ class SlackMessageFormater
                     ],
                     [
                         'type' => 'mrkdwn',
-                        'text' => "*An Name:*\n" . $historyEntry->getTargetAlias(),
+                        'text' => "*An Name:*\n" . $this->getTargetName($historyEntry),
                     ],
                     [
                         'type' => 'mrkdwn',
-                        'text' => "*Wann:*\n" . $historyEntry->getCreated()->format('d.m.Y H:i'),
+                        'text' => "*Wann:*\n" . $formatedDateCreated,
                     ],
                     [
                         'type' => 'mrkdwn',
