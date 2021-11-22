@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Classes\Sipgate;
 
+use App\Config\Config;
 use DateTimeZone;
 
 class HistoryEntry
@@ -22,12 +23,17 @@ class HistoryEntry
 
     public function getCreated(): \DateTime
     {
-        return new \DateTime($this->historyEntryDataArray['created'], new DateTimeZone('Europe/Berlin'));
+        return new \DateTime($this->historyEntryDataArray['created']);
     }
 
     public function getLastModified(): \DateTime
     {
         return new \DateTime($this->historyEntryDataArray['created'], new DateTimeZone('Europe/Berlin'));
+    }
+
+    public function getDirection()
+    {
+        return $this->historyEntryDataArray['direction'];
     }
 
     public function getRecordingUrl(): string
@@ -82,5 +88,37 @@ class HistoryEntry
     public function getResponderAlias(): string
     {
         return $this->historyEntryDataArray['responderAlias'] ?? '';
+    }
+
+    public function getHistoryEntryData()
+    {
+        return $this->historyEntryDataArray;
+    }
+
+    public function getSourceContact(): ?Contact
+    {
+        return $this->getContact($this->getSource());
+    }
+
+    public function getTargetContact(): ?Contact
+    {
+        return $this->getContact($this->getTarget());
+    }
+
+    private function getContact($number): ?Contact
+    {
+        if (!$number) {
+            return null;
+        }
+
+        $sipgateApi = new SipgateApi(
+            Config::SIPGATE_API_USERNAME,
+            Config::SIPGATE_API_PASSWORD
+        );
+
+        $number = str_replace('+', '', $number);
+        $contacts = $sipgateApi->getContactsByNumber($number);
+
+        return $contacts[0] ?? null;
     }
 }
