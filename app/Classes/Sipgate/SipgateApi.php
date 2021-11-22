@@ -41,10 +41,21 @@ class SipgateApi
         $response = $this->sendRequest('history');
         //$response = $this->sendRequest('history?types=VOICEMAIL');
 
+        $historyEntries = [];
         foreach ($response['items'] as $historyEntry) {
             $historyEntries[] = new HistoryEntry($historyEntry);
         }
         return $historyEntries;
+    }
+
+    public function getContactsByNumber(string $number): array
+    {
+        $response = $this->sendRequest('contacts?phonenumbers=' . $number);
+        $contacts = [];
+        foreach ($response['items'] as $historyEntry) {
+            $contacts[] = new Contact($historyEntry);
+        }
+        return $contacts;
     }
 
     public function call(string $deviceId, string $number): void
