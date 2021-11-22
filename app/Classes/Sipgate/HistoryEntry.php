@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Classes\Sipgate;
 
+use DateTimeZone;
+
 class HistoryEntry
 {
     private $historyEntryDataArray;
@@ -20,12 +22,12 @@ class HistoryEntry
 
     public function getCreated(): \DateTime
     {
-        return new \DateTime($this->historyEntryDataArray['created']);
+        return new \DateTime($this->historyEntryDataArray['created'], new DateTimeZone('Europe/Berlin'));
     }
 
     public function getLastModified(): \DateTime
     {
-        return new \DateTime($this->historyEntryDataArray['created']);
+        return new \DateTime($this->historyEntryDataArray['created'], new DateTimeZone('Europe/Berlin'));
     }
 
     public function getRecordingUrl(): string
