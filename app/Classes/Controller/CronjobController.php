@@ -59,6 +59,8 @@ class CronjobController
 
         $historyEntries = $sipgateApi->getAllHistoryEntries();
 
+        array_reverse($historyEntries);
+
         $historyFilter = new HistoryEntryFilter();
         $newHistoryEntries = $historyEntries;
         $newHistoryEntries = $historyFilter->filterNewUnsendEntries($newHistoryEntries);
