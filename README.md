@@ -33,3 +33,9 @@ To do this, download `ngrok` from https://ngrok.com. You can run `ngrok` on your
 ```bash
 ./ngrok http -host-header=rewrite myapp.dev:80 
 ```
+
+## Sipgate Api Token permissions
+- history
+- rtcm
+- sessions
+- contacts
