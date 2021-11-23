@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Classes\Sipgate;
 
 use App\Config\Config;
-use DateTimeZone;
 
 class HistoryEntry
 {
@@ -28,7 +27,7 @@ class HistoryEntry
 
     public function getLastModified(): \DateTime
     {
-        return new \DateTime($this->historyEntryDataArray['created'], new DateTimeZone('Europe/Berlin'));
+        return new \DateTime($this->historyEntryDataArray['lastModified']);
     }
 
     public function getDirection()
